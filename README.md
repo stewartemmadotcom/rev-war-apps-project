@@ -12,11 +12,21 @@ maintainers' permission, for topic modeling, text reuse and word embedding work.
 | 2. Extract text (drops footnotes by font size) | `extract_text.py` | `data/raw_text/`, `data/body_text/` |
 | 3. Remove transcriber apparatus; save transcriber notes; label widow material | `clean_text.py` | `data/clean_text/`, `data/notes_text/`, new columns in `metadata.csv` |
 | 4. List files with the widow's declaration, by voice | `widow_voice.py` | `widow_voice.csv` |
+| 5. Split each file into its documents and keep the widow's own | `split_documents.py` | `documents.csv`, `data/widow_text/` |
 
 `data/` is not in the repository (about 600 MB). With the PDFs in `data/pdfs/`, re-create
 the rest by running steps 2 to 4.
 
-Tests for the cleaning rules: `python -m pytest test_clean_text.py`
+Tests: `python -m pytest test_clean_text.py test_split_documents.py`
+
+## The widow's own words
+
+`split_documents.py` cuts each cleaned file into its documents (the soldier's
+declaration, the widow's declaration, witnesses' affidavits, certificates, family
+records, heirs' claims) and labels each by who is speaking. `data/widow_text/` holds
+only the widow's own declarations, petitions and letters: 2,029 documents from 1,491
+files, about 860,000 words. `documents.csv` lists every document with its type and
+opening words, for checking boundaries against the PDFs.
 
 ## Widow material labels
 
