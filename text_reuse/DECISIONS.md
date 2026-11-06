@@ -92,6 +92,15 @@ Not decisions; recorded so the open questions below have their evidence.
     into the declaration (family 11, "Department of the Interior ... I certify").
 - So at 0.3 a family's spread over places and years is what tells a local writer from a form.
 
+**Tracing the Lunenburg/Charlotte family** (`03_reuse_trace_clause.py`, page
+`output/03_trace_lunenburg_charlotte.html`). Its own wording, "for which length of time she
+claims a pension. In support of her claim she refers to ...", is in 20 widows' declarations,
+all in Southside Virginia: Charlotte and Lunenburg counties from 1839 (with Halifax), Nottoway
+in 1840, Campbell from 1841, Buckingham in 1842, Halifax again in 1844. The same block carries
+"for the same reason she cannot state precisely how long he was in actual service" and the
+"hardships and privations" wording. One writer, or one office's template, moving west from
+Charlotte and Lunenburg over five years.
+
 ## 5. Open questions from the first run
 
 - **5.1 Match threshold.** 0.5 finds near-copies (45 files); 0.3 finds the local clusters and

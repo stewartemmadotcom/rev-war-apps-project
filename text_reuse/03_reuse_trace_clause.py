@@ -20,12 +20,20 @@ residence date in the 1818 act's oath, are skipped. Versions with no date go
 last. Treat the order as rough.
 
 The page (output/03_trace.html) shows every version, with the changes from
-the version before highlighted, and opens in your browser.
+the version before highlighted, and opens in your browser. Each version is
+labeled with the county named in the file's opening lines, so a local
+writer's wording shows up as a run of neighbouring counties.
+
+To follow another passage without editing START, give it on the command line,
+with an optional page name:
+    python 03_reuse_trace_clause.py "for which length of time she claims a pension" lunenburg
+    # -> output/03_trace_lunenburg.html
 """
 
 import difflib
 import html
 import re
+import sys
 import webbrowser
 
 from common import (CORPUS_FOLDER, OUTPUT_FOLDER, SCRIPT_DIR, jaccard, phrases, read_metadata,
@@ -45,7 +53,7 @@ START = "have not since that time by gift sale or in any manner whatever dispose
 SHARE = 0.6             # share of START's 3-word phrases a file must contain
 SENTENCES = 2           # how many sentences to show, starting with the match
 
-OPEN_IN_BROWSER = True
+OPEN_IN_BROWSER = False
 
 # -------------------------------------------------------------------------------
 
@@ -139,7 +147,24 @@ def changes(old, new):
     return " ".join(out)
 
 
+COUNTY = re.compile(r"\b(?:County of ([A-Z][a-z]+)|([A-Z][a-z]+) County|"
+                    r"District of ([A-Z][a-z]+)|([A-Z][a-z]+) District)")
+OPENING_CHARS = 400  # the venue heading is at the top of the declaration
+
+
+def county_of(text):
+    """The first county or district named at the top of the file, or ''."""
+    m = COUNTY.search(text[:OPENING_CHARS])
+    return next(g for g in m.groups() if g) if m else ""
+
+
 def main():
+    global START
+    page_name = "03_trace.html"
+    if len(sys.argv) > 1:
+        START = sys.argv[1]
+        if len(sys.argv) > 2:
+            page_name = f"03_trace_{sys.argv[2]}.html"
     people = read_metadata()
     target = phrases(START, 3)
     found = []
@@ -151,7 +176,7 @@ def main():
             passage, start = excerpt(text, target)
             name = people.get(code, {}).get("name", "")
             found.append({"code": code, "name": name, "year": date_near(text, start),
-                          "text": passage})
+                          "county": county_of(text), "text": passage})
     found.sort(key=lambda f: (f["year"], f["code"]))
     if not found:
         print("No files found. Try a lower SHARE or different words in START.")
@@ -161,7 +186,8 @@ def main():
     parts, previous = [], None
     for f in found:
         year = str(f["year"]) if f["year"] != 9999 else "n.d."
-        label = f"{year}  {f['code']} ({f['name']})"
+        place = f", {f['county']} County" if f["county"] else ""
+        label = f"{year}  {f['code']} ({f['name']}){place}"
         if previous is None:
             similarity, body = "", html.escape(f["text"])
             print(f"  {label:40s}       {f['text'][:80]}")
@@ -191,7 +217,7 @@ def main():
 {''.join(parts)}
 </body></html>"""
     OUTPUT_FOLDER.mkdir(exist_ok=True)
-    path = OUTPUT_FOLDER / "03_trace.html"
+    path = OUTPUT_FOLDER / page_name
     path.write_text(page, encoding="utf-8")
     print(f"\nSaved {path.relative_to(SCRIPT_DIR)}")
     if OPEN_IN_BROWSER:

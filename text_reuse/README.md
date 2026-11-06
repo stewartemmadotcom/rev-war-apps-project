@@ -8,7 +8,7 @@ They find passages that different applicants' files share, even when the copies 
 |---|---|---|
 | `01_reuse_jaccard_by_hand.py` | N-grams, shingles and Jaccard for two 1832-act declarations, step by step | `TEXT_A`, `TEXT_B`, `N`, `K`, `CLEAN` |
 | `02_reuse_minhash.py` | Compares every passage of every file: what formulas run through the files, and what passages do different applicants' files share? | `MATCH`, `BOILERPLATE`, `LOOK_FOR` |
-| `03_reuse_trace_clause.py` | Follows one passage through every file that has it and shows what changed | `START`, `SHARE` |
+| `03_reuse_trace_clause.py` | Follows one passage through every file that has it, labeled by county, and shows what changed | `START`, `SHARE` (or `python 03_reuse_trace_clause.py "passage" name`) |
 | `04_form_and_her_words.py` | How much of each declaration is the acts' form, and a page showing form vs. her words | `SAMPLE`, `SEED` |
 | `common.py` | Reads the corpus into passages (used by 02) | `WINDOW`, `STEP`, `WIDOW_WORDS` |
 

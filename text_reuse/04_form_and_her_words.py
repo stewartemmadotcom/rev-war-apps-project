@@ -12,6 +12,10 @@ places, dates, her memories of his service, her reasons.
 Results:
   output/04_form_share.csv  every file: words, form words, share that is form
   output/04_form_view.html  SAMPLE declarations with the form greyed out, to read
+  ../data/widow_text_noform/<code>.txt
+                            the same declarations with the form words taken out,
+                            one per paragraph as in widow_text/ (for the topic
+                            model's run without form: ../topic_modeling/DECISIONS.md 6.3)
 
 Run 02_reuse_minhash.py first.
 """
@@ -33,6 +37,7 @@ SEED = 1        # which ones (change for a different sample)
 # -------------------------------------------------------------------------------
 
 BOILERPLATE_CSV = OUTPUT_FOLDER / "02_boilerplate.csv"
+NOFORM_FOLDER = CORPUS_FOLDER.parent / "widow_text_noform"
 
 
 def form_mask(words, formulas):
@@ -59,6 +64,19 @@ def marked_html(text, formulas):
     return "".join(out)
 
 
+def without_form(text, formulas):
+    """The text with every form word cut out (punctuation and other words kept)."""
+    spans = list(WORD.finditer(text.lower()))
+    mask = form_mask([m.group(0) for m in spans], formulas)
+    out, pos = [], 0
+    for m, is_form in zip(spans, mask):
+        if is_form:
+            out.append(text[pos:m.start()])
+            pos = m.end()
+    out.append(text[pos:])
+    return " ".join("".join(out).split())
+
+
 def main():
     if not BOILERPLATE_CSV.exists():
         raise SystemExit("Run 02_reuse_minhash.py first: it writes output/02_boilerplate.csv.")
@@ -67,6 +85,7 @@ def main():
     print(f"{len(formulas):,} boilerplate phrases from step 2")
 
     people = read_metadata()
+    NOFORM_FOLDER.mkdir(exist_ok=True)
     rows, texts = [], {}
     for path in sorted(CORPUS_FOLDER.glob("*.txt")):
         code = path.stem.upper()
@@ -75,6 +94,10 @@ def main():
         if not words:
             continue
         form = sum(form_mask(words, formulas))
+        # one declaration per paragraph, as in widow_text/
+        paragraphs = path.read_text(encoding="utf-8").split("\n\n")
+        (NOFORM_FOLDER / path.name).write_text(
+            "\n\n".join(without_form(p, formulas) for p in paragraphs), encoding="utf-8")
         rows.append({"code": code, "name": people.get(code, {}).get("name", ""),
                      "words": len(words), "form_words": form,
                      "form_share": round(form / len(words), 3)})
@@ -116,6 +139,7 @@ the rest.</p>
     path = OUTPUT_FOLDER / "04_form_view.html"
     path.write_text(page, encoding="utf-8")
     print(f"Saved output/04_form_share.csv and {path.relative_to(SCRIPT_DIR)}")
+    print(f"Wrote the declarations without form words to {NOFORM_FOLDER}")
 
 
 if __name__ == "__main__":

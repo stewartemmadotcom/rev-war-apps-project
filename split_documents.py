@@ -7,6 +7,8 @@ document starts, labels each one by who is speaking, and writes:
 
   data/widow_text/<code>.txt  the widow's own declaration(s), petition(s) or letter(s),
                               for files that have any (one per paragraph)
+  data/doc_text/<code>.txt    every document in the file, one per paragraph, in the
+                              order (and numbering) of documents.csv
   documents.csv               every document found: file, position, type, length and
                               its opening words, for checking the boundaries by hand
 
@@ -48,6 +50,7 @@ from clean_text import HEIRS_CLAIMANT
 PROJECT_DIR = Path(__file__).parent
 CLEAN_DIR = PROJECT_DIR / "data" / "clean_text"
 WIDOW_DIR = PROJECT_DIR / "data" / "widow_text"
+DOC_DIR = PROJECT_DIR / "data" / "doc_text"
 DOCUMENTS_CSV = PROJECT_DIR / "documents.csv"
 FIELDS = ["pdf_filename", "doc", "type", "words", "first_line", "opening"]
 OPENING_CHARS = 160
@@ -206,9 +209,12 @@ def doc_type(text: str) -> str:
 
 def main():
     WIDOW_DIR.mkdir(parents=True, exist_ok=True)
+    DOC_DIR.mkdir(parents=True, exist_ok=True)
     rows, counts, files_with_widow = [], collections.Counter(), 0
     for path in sorted(CLEAN_DIR.glob("*.txt")):
         docs = split(path.read_text(encoding="utf-8"))
+        # documents never contain a blank line, so a blank line separates them
+        (DOC_DIR / path.name).write_text("\n\n".join(text for _, text in docs), encoding="utf-8")
         widow_docs = []
         for n, (first, text) in enumerate(docs, start=1):
             kind = doc_type(text)
