@@ -32,10 +32,15 @@ the families spread across the most files and the families whose text matches
 LOOK_FOR. LOOK_FOR doesn't change the search; it only picks what to print.
 
 Results: output/02_boilerplate.csv and output/02_families.csv.
+
+To try another match threshold without editing MATCH, give it on the command
+line; the families then go to their own file:
+    python 02_reuse_minhash.py 0.3      # -> output/02_families_match0.3.csv
 """
 
 import csv
 import re
+import sys
 import zlib
 from collections import Counter, defaultdict
 
@@ -48,8 +53,10 @@ from common import OUTPUT_FOLDER, SCRIPT_DIR, WIDOW_WORDS, cite, phrases, read_w
 N = 5                   # words per phrase
 HASHES = 120            # numbers in each signature
 BANDS = 60              # bands per signature (HASHES / BANDS numbers per band)
-MATCH = 0.5             # a match shares at least this share of its phrases (Jaccard)
-BOILERPLATE = 0.05      # phrases in more than this share of files are formulas
+MATCH = 0.5             # a match shares at least this share of its phrases
+                        # (Jaccard; DECISIONS.md 3.2, open)
+BOILERPLATE = 0.10      # phrases in more than this share of files are formulas
+                        # (DECISIONS.md 3.1)
 LOOK_FOR = WIDOW_WORDS.pattern  # second list: families with these words (a regex,
                                 # e.g. r"\bcherokee\b"; case doesn't matter)
 TOP_N = 15              # families to print in each list
@@ -76,6 +83,12 @@ def minhash(numbers):
 
 
 def main():
+    global MATCH
+    families_name = "02_families.csv"
+    if len(sys.argv) > 1:
+        MATCH = float(sys.argv[1])
+        families_name = f"02_families_match{sys.argv[1]}.csv"
+    print(f"Match threshold: {MATCH}")
     print("Reading the corpus...")
     windows = read_windows()
     codes = np.array([w["code"] for w in windows])
@@ -219,7 +232,7 @@ def main():
                          "best_match": cite(windows[best_match[k]]) if has_match else "",
                          "score": round(best_score[k], 2) if has_match else ""})
 
-    path = OUTPUT_FOLDER / "02_families.csv"
+    path = OUTPUT_FOLDER / families_name
     with open(path, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=list(rows[0]))
         writer.writeheader()

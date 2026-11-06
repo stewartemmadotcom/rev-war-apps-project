@@ -2,9 +2,11 @@
 Shared helpers for the text-reuse scripts.
 
 Adapted from the session-laws version in ~/Desktop/11-Text-Reuse. The corpus
-here is the pension-application transcriptions from revwarapps.org, one file
-per application in ../data/clean_text/ (transcriber brackets and notes already
-removed by ../clean_text.py).
+here is the widow's own documents from the revwarapps.org pension transcriptions:
+one file per application in ../data/widow_text/, holding only the declarations,
+petitions and letters in which the widow speaks (../split_documents.py), with
+transcriber brackets and notes already removed (../clean_text.py). See
+DECISIONS.md 1.
 
 Session laws come split into sections ("Sec. 1 ..."). Pension files don't: a
 file is one run of declarations, affidavits and certificates, and its blank
@@ -25,7 +27,7 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).parent
 PROJECT_DIR = SCRIPT_DIR.parent
-CORPUS_FOLDER = PROJECT_DIR / "data" / "clean_text"
+CORPUS_FOLDER = PROJECT_DIR / "data" / "widow_text"  # DECISIONS.md 1.1
 METADATA_CSV = PROJECT_DIR / "metadata.csv"
 OUTPUT_FOLDER = SCRIPT_DIR / "output"
 
@@ -71,7 +73,8 @@ def read_windows():
     """Every passage of every file, in file order."""
     files = sorted(CORPUS_FOLDER.glob("*.txt"))
     if not files:
-        raise SystemExit(f"No text files in {CORPUS_FOLDER}. Run ../clean_text.py first.")
+        raise SystemExit(f"No text files in {CORPUS_FOLDER}. "
+                         "Run ../clean_text.py and ../split_documents.py first.")
     people = read_metadata()
     windows = []
     for path in files:

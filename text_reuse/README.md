@@ -9,7 +9,11 @@ They find passages that different applicants' files share, even when the copies 
 | `01_reuse_jaccard_by_hand.py` | N-grams, shingles and Jaccard for two 1832-act declarations, step by step | `TEXT_A`, `TEXT_B`, `N`, `K`, `CLEAN` |
 | `02_reuse_minhash.py` | Compares every passage of every file: what formulas run through the files, and what passages do different applicants' files share? | `MATCH`, `BOILERPLATE`, `LOOK_FOR` |
 | `03_reuse_trace_clause.py` | Follows one passage through every file that has it and shows what changed | `START`, `SHARE` |
-| `common.py` | Reads `../data/clean_text/` into passages (used by 02) | `WINDOW`, `STEP`, `WIDOW_WORDS` |
+| `04_form_and_her_words.py` | How much of each declaration is the acts' form, and a page showing form vs. her words | `SAMPLE`, `SEED` |
+| `common.py` | Reads the corpus into passages (used by 02) | `WINDOW`, `STEP`, `WIDOW_WORDS` |
+
+**Corpus: the widow's own documents, `../data/widow_text/`** (from `../split_documents.py`).
+Decisions, what the first run showed, and open questions are in `DECISIONS.md`.
 
 ## Running it
 
@@ -20,13 +24,15 @@ cd text_reuse
 ../.venv/bin/python 01_reuse_jaccard_by_hand.py
 ../.venv/bin/python 02_reuse_minhash.py     # about 10 seconds
 ../.venv/bin/python 03_reuse_trace_clause.py  # opens a page in your browser
+../.venv/bin/python 04_form_and_her_words.py  # after 02
 ```
 
 Results go to `output/`: `02_boilerplate.csv` (formula phrases and how many files use them),
-`02_families.csv` (every shared passage, grouped into families) and `03_trace.html`.
+`02_families.csv` (every shared passage, grouped into families), `03_trace.html`,
+`04_form_share.csv` (each file's share of form words) and `04_form_view.html`.
 
-The scripts read whatever is in `../data/clean_text/`, so rerun them as more files are downloaded
-and cleaned (`../extract_text.py`, then `../clean_text.py`).
+The scripts read whatever is in `../data/widow_text/`, so rerun them after `../clean_text.py`
+and `../split_documents.py`.
 
 ## How it differs from the session-laws version
 
@@ -51,15 +57,16 @@ and cleaned (`../extract_text.py`, then `../clean_text.py`).
 - **These are transcriptions, not OCR.** There are far fewer errors than in the session laws, but each
   transcriber's habits (spelling kept or modernised, "S/" for signatures) change the n-grams.
   `02` prints the match rate by transcriber as a check.
-- **Most widow material isn't here.** About two thirds of the files give the widow's application
-  only as a transcriber's summary (`widow_material = summary_only` in `../metadata.csv`). Summaries
-  are in `../data/notes_text/`, which these scripts deliberately leave out (modern wording). So
-  `LOOK_FOR` finds few widow families at `MATCH = 0.5`. At 0.3 the 1838 widows' declaration form shows up.
-- **Shared doesn't mean copied from each other.** Most families are printed or official forms: the
-  1820 property oath, the 1828 act's Treasury form, the NC Secretary of State's certificate of
-  service. The rarer finds are local, like one witness's affidavit written into several families'
-  files on the same day.
-- **Only W (widow) files so far.** The corpus reflects what has been downloaded, not all pension files.
+- **Only the widows whose declarations were transcribed.** About two thirds of the files give her
+  application only as a transcriber's summary (`widow_material = summary_only` in
+  `../metadata.csv`), so they have no widow document. The corpus is the other third.
+- **Shared doesn't mean copied from each other.** Most of what the widows' declarations share is
+  the acts' required form, set aside as boilerplate. The rarer finds are local, like one claims
+  agent's wording for a widow's memories of service used in several Virginia counties
+  (DECISIONS.md 4). Earlier whole-file runs found the 1820 property oath, the 1828 act's Treasury
+  form, the NC Secretary of State's certificate of service, and one witness's affidavit written
+  into several families' files on the same day; those documents are not in this corpus.
+- **Only W (widow) files.** The corpus is the widow applications, not all pension files.
 
 ## Credits
 
