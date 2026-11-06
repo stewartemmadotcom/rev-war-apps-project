@@ -32,8 +32,9 @@ Tests for the cleaning rules: `python -m pytest test_clean_text.py`
   agree with the detector on 192 of 197 (97%, CI 94 to 99%).
 - `hand_check_200/` is the blind version of that sample for a human checker (the PDFs
   are not in the repository). `import_hand_check.py` reads the returned workbook back in.
-- Rounds 1 to 3 were used to tune the patterns, and were judged before a notes fix, so
-  they are kept for the record but should not be cited.
+- `hand_checks/archive/` holds the earlier stratified rounds 1 to 3. They were used to tune
+  the patterns and were judged before a notes fix, so they should not be cited (see the
+  README there).
 
 ## Analysis
 

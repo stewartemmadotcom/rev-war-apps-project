@@ -14,10 +14,10 @@ when drawn), so the rare labels get checked too. With --random N it is instead
 a simple random sample of N files, so labels appear in proportion to the full
 set and agreement estimates overall accuracy directly.
 
-For a fresh round that skips files already checked:
-    python make_widow_check_sample.py --seed 2 --out widow_check_sample_round2.csv \
-        --exclude widow_check_sample_round1.csv
-    python make_widow_check_sample.py --score --out widow_check_sample_round2.csv
+For a fresh sample that skips files already checked:
+    python make_widow_check_sample.py --seed 5 --out widow_check_sample_rare.csv \
+        --exclude widow_check_sample_random200.csv hand_checks/archive/*.csv
+    python make_widow_check_sample.py --score --out widow_check_sample_rare.csv
 """
 
 import argparse
