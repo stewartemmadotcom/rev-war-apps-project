@@ -1,0 +1,30 @@
+# Python and tooling
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# macOS and Office lock files
+.DS_Store
+~$*
+
+# Downloaded PDFs and text generated from them (re-create with the pipeline)
+data/
+*.part
+hand_check_200/pdfs/
+
+# Run logs
+*.log
+extraction_log.csv
+download_failures.csv
+
+# Generated analysis output and trained models (re-create with each folder's scripts)
+text_reuse/output/
+topic_modeling/output/
+word_embeddings/output/
+word_embeddings/models/
+
+# Scraper scripts (kept locally, not shared)
+scrape_index.py
+download_pdfs.py

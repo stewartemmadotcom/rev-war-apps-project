@@ -1,0 +1,32 @@
+prefix,meaning,source
+S,Federal application by a surviving soldier whose widow did not apply,FAQ.htm
+W,Federal application by a widow (with or without the soldier's own application),FAQ.htm
+R,"Rejected federal claim (usually); less often a Virginia half-pay-for-life claim",FAQ.htm
+BLWT,Application for a federal bounty land warrant (soldiers who served to the end of the war),FAQ.htm
+X,File number formerly assigned by HeritageQuest because the federal file lacked a number,FAQ.htm
+VAS,"Virginia state application: pension for a disabled soldier or widow, or bounty land (Library of Virginia)",FAQ.htm / index page
+SC,"South Carolina state records (SC Dept. of Archives & History), mostly audited accounts of claims for service",index page
+NC,State application to North Carolina (State Archives of North Carolina) transferred to federal jurisdiction,FAQ.htm / index page
+GA,State application to Georgia transferred to federal jurisdiction,FAQ.htm
+VA,State application to Virginia transferred to federal jurisdiction,FAQ.htm
+PA,State application to Pennsylvania transferred to federal jurisdiction,inferred from FAQ.htm
+MD,State application to Maryland transferred to federal jurisdiction,inferred from FAQ.htm
+MDS,Maryland state application,inferred
+SCS,South Carolina state application (non-audited-account),inferred
+SCX,South Carolina record without a standard number,inferred
+VAX,Virginia record without a standard number,inferred
+BLREG,Bounty land register entry (often under the 1855 act),inferred
+BLR,Bounty land register entry,inferred
+B,Bounty land register / warrant file,inferred
+RBL,Rejected bounty land claim,inferred from index entry
+REG,Register number,inferred from index entry
+CN,Certificate number,inferred from index entry
+CT,Certificate,inferred
+CTF,Certificate,inferred
+CFT,Certificate,inferred
+OWIF,Old War Invalid File (pre-1818 invalid pension),inferred
+RNC,Rejected claim with North Carolina state number,inferred
+SNC,Survivor's application with North Carolina state number,inferred
+XOX,Unnumbered file,inferred
+G,Miscellaneous county collection (e.g. Guilford County NC applications),inferred from index entry
+,No letter prefix (numeric-only file name),index page
